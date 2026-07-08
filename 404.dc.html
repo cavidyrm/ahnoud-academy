@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,401,500,501,600,601,700,701&amp;display=swap">
+<style>
+@font-face{font-family:'Kalameh';src:url('https://cdn.jsdelivr.net/gh/TechDude9/font@main/KalamehWeb_Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;size-adjust:150%}
+@font-face{font-family:'Kalameh';src:url('https://cdn.jsdelivr.net/gh/TechDude9/font@main/KalamehWeb_Bold.woff2') format('woff2');font-weight:500 700;font-style:normal;font-display:swap;size-adjust:150%}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#f5f4ef}
+a{color:#12140f}
+a:hover{color:#5f7014}
+</style>
+</helmet>
+<div dir="{{ dir }}" data-screen-label="404" style="min-height:100vh;background:#f5f4ef;color:#12140f;font-family:{{ bodyFont }};-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;box-sizing:border-box">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:26px clamp(20px,4vw,64px) 0">
+    <a href="Ahnoud Academy Landing.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#12140f">
+      <img src="assets/logo-dark.svg" alt="Ahnoud" style="height:32px;width:auto;display:block">
+      <span style="font-family:{{ headFont }};font-weight:700;font-size:20px;letter-spacing:.02em">AHNOUD</span>
+    </a>
+    <button onClick="{{ toggleLang }}" title="{{ langToggleTitle }}" style="width:44px;height:44px;border-radius:12px;flex:none;background:#12140f;border:none;color:#f5f4ef;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;line-height:1;font-family:{{ altFont }};transition:all .18s" style-hover="color:#d9f64a">{{ langToggleLabel }}</button>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:28px;padding:48px clamp(20px,4vw,64px)">
+    <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#565850">{{ badge }}</span>
+    <div dir="ltr" style="display:flex;align-items:center;justify-content:center;gap:.08em;font-family:'General Sans',sans-serif;font-weight:700;font-size:clamp(120px,26vw,300px);line-height:.9;letter-spacing:-0.02em;color:#12140f">
+      <span>4</span>
+      <span style="width:.62em;height:.62em;border-radius:50%;background:#d9f64a;flex:none;margin:0 .04em;box-shadow:inset 0 0 0 3px #12140f"></span>
+      <span>4</span>
+    </div>
+    <h1 style="margin:0;font-family:{{ headFont }};font-weight:700;font-size:clamp(26px,3.4vw,44px);line-height:{{ lhHead }};text-transform:uppercase;letter-spacing:{{ trackHead }};max-width:720px">{{ h }}</h1>
+    <p style="margin:0;font-size:16px;line-height:1.65;color:#565850;max-width:440px">{{ sub }}</p>
+    <a href="Ahnoud Academy Landing.dc.html" style="display:inline-flex;align-items:center;gap:12px;background:#12140f;color:#d9f64a;text-decoration:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:{{ trackWide }};padding:16px 26px;border-radius:9px;transition:all .2s;white-space:nowrap;margin-top:8px" style-hover="background:#d9f64a;color:#12140f;gap:18px">{{ cta }}<span style="font-size:16px;font-weight:400;line-height:1">+</span></a>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid rgba(18,20,15,.2);padding:22px clamp(20px,4vw,64px) 26px;flex-wrap:wrap">
+    <span style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#8a8c80">{{ footCopy }}</span>
+    <span style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#8a8c80">{{ footMade }}</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { lang: 'en' };
+
+  componentDidMount() {
+    try {
+      const saved = localStorage.getItem('ahnoud-lang');
+      if ((saved === 'en' || saved === 'fa') && saved !== this.state.lang) this.setState({ lang: saved });
+    } catch (e) {}
+  }
+
+  renderVals() {
+    const fa = this.state.lang === 'fa';
+    const t = fa ? {
+      badge: '( ۴۰۴ — صفحه پیدا نشد )',
+      h: 'این توپ خارج از زمین فرود آمد',
+      sub: 'صفحه‌ای که دنبال آن هستید وجود ندارد یا جابه‌جا شده است. به صفحه اصلی برگردید و بازی را ادامه دهید.',
+      cta: 'بازگشت به صفحه اصلی',
+      footCopy: '© ۲۰۲۶ آکادمی اهنود. تمام حقوق محفوظ است.',
+      footMade: 'تنیس · پادل'
+    } : {
+      badge: '( 404 — Page not found )',
+      h: 'That one landed out of bounds',
+      sub: 'The page you are looking for does not exist or has been moved. Head back to the baseline and keep playing.',
+      cta: 'Back to home',
+      footCopy: '© 2026 Ahnoud Academy. All rights reserved.',
+      footMade: 'Tennis · Padel'
+    };
+    const setLang = (l) => {
+      try { localStorage.setItem('ahnoud-lang', l); } catch (e) {}
+      this.setState({ lang: l });
+    };
+    return {
+      ...t,
+      dir: fa ? 'rtl' : 'ltr',
+      bodyFont: fa ? "'Kalameh','Vazirmatn',system-ui,sans-serif" : "'General Sans',system-ui,sans-serif",
+      headFont: fa ? "'Kalameh','Vazirmatn',sans-serif" : "'General Sans',sans-serif",
+      altFont: fa ? "'General Sans',sans-serif" : "'Kalameh','Vazirmatn',sans-serif",
+      trackWide: fa ? '0' : '.12em',
+      trackHead: fa ? '0' : '-0.015em',
+      lhHead: fa ? '1.14' : '.98',
+      toggleLang: () => setLang(fa ? 'en' : 'fa'),
+      langToggleLabel: fa ? 'EN' : 'فا',
+      langToggleTitle: fa ? 'English' : 'فارسی'
+    };
+  }
+}
+</script>
+</body>
+</html>

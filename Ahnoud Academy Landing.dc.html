@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,401,500,501,600,601,700,701&amp;display=swap">
+<style>
+@font-face{font-family:'Kalameh';src:url('https://cdn.jsdelivr.net/gh/TechDude9/font@main/KalamehWeb_Regular.woff2') format('woff2'),url('https://cdn.jsdelivr.net/gh/TechDude9/font@master/KalamehWeb_Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;size-adjust:150%}
+@font-face{font-family:'Kalameh';src:url('https://cdn.jsdelivr.net/gh/TechDude9/font@main/KalamehWeb_Bold.woff2') format('woff2'),url('https://cdn.jsdelivr.net/gh/TechDude9/font@master/KalamehWeb_Bold.woff2') format('woff2');font-weight:500 700;font-style:normal;font-display:swap;size-adjust:150%}
+@font-face{font-family:'Kalameh';src:url('https://cdn.jsdelivr.net/gh/TechDude9/font@main/KalamehWeb_Black.woff2') format('woff2'),url('https://cdn.jsdelivr.net/gh/TechDude9/font@master/KalamehWeb_Black.woff2') format('woff2');font-weight:800 900;font-style:normal;font-display:swap;size-adjust:150%}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;900&amp;display=swap">
+<style>
+html{scroll-behavior:smooth}
+body{margin:0;background:#f5f4ef}
+@keyframes ahnMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes ahnRise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ahnFade{from{opacity:0}to{opacity:1}}
+.ahn-rail::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div style="{{ deviceBgStyle }}">
+<div style="{{ frameStyle }}">
+<div dir="{{ dir }}" style="background:#f5f4ef;color:#12140f;font-family:{{ bodyFont }};-webkit-font-smoothing:antialiased;overflow-x:clip">
+
+  <!-- ============ TWEAKS PANEL (custom, floating top-right) ============ -->
+  <div dir="ltr" style="position:fixed;top:20px;right:20px;z-index:120;font-family:'General Sans',sans-serif;display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+    <sc-if value="{{ twClosed }}" hint-placeholder-val="{{ true }}">
+      <button onClick="{{ twToggle }}" style="background:#1c1d19;color:#c9ccbf;border:none;cursor:pointer;border-radius:999px;padding:10px 18px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-family:inherit;box-shadow:0 12px 32px rgba(16,18,16,.32);transition:all .18s" style-hover="color:#d9f64a;transform:translateY(-1px)">Tweaks</button>
+    </sc-if>
+    <sc-if value="{{ twOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#1c1d19;color:#f5f4ef;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:16px;box-shadow:0 24px 60px rgba(16,18,16,.45);width:240px;border:1px solid rgba(245,244,239,.08)">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:13px;font-weight:600">Tweaks</span>
+          <button onClick="{{ twToggle }}" style="background:transparent;border:none;color:#9d9e96;cursor:pointer;font-size:18px;line-height:1;padding:2px 4px;font-family:inherit" style-hover="color:#f5f4ef">×</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#8a8c80">Device</span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <sc-for list="{{ twDevices }}" as="d" hint-placeholder-count="4">
+              <button onClick="{{ d.onClick }}" style="{{ d.style }}" style-hover="border-color:#d9f64a;color:#d9f64a">{{ d.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#8a8c80">Language</span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;background:rgba(245,244,239,.07);padding:4px;border-radius:11px">
+            <sc-for list="{{ twLangs }}" as="lg" hint-placeholder-count="2">
+              <button onClick="{{ lg.onClick }}" style="{{ lg.style }}" style-hover="color:#f5f4ef">{{ lg.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#8a8c80">Programs</span>
+          <button onClick="{{ twPadelToggle }}" style="display:flex;align-items:center;justify-content:space-between;gap:16px;background:transparent;border:none;padding:2px 0;cursor:pointer;color:#f5f4ef;font-family:inherit;font-size:13px;font-weight:500">
+            <span>Padel first</span>
+            <span style="{{ twSwitchStyle }}"><span style="{{ twKnobStyle }}"></span></span>
+          </button>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- ============ NAV (floating, bottom) ============ -->
+  <div data-screen-label="Nav" dir="ltr" style="position:fixed;bottom:24px;left:0;right:0;z-index:100;display:flex;justify-content:center;padding:0 24px;pointer-events:none;box-sizing:border-box;max-width:{{ navWrapMax }};margin:0 auto">
+    <nav style="pointer-events:auto;background:#2c2d29;border-radius:18px;display:flex;align-items:center;gap:6px;padding:7px;color:#f5f4ef;box-shadow:0 18px 48px rgba(16,18,16,.38);max-width:100%">
+      <a href="#top" title="AHNOUD" style="width:44px;height:44px;border-radius:12px;background:#3b3c37;display:grid;place-items:center;text-decoration:none;flex:none;margin-inline-end:6px">
+        <img src="assets/logo-lime.svg" alt="Ahnoud" style="height:26px;width:22px;object-fit:contain;display:block">
+      </a>
+      <div class="ahn-rail" style="{{ navLinksWrapStyle }}">
+        <sc-for list="{{ navLinks }}" as="lnk" hint-placeholder-count="5">
+          <a href="{{ lnk.href }}" style="{{ lnk.style }}" style-hover="opacity:1;color:#f5f4ef">
+            <span style="visibility:hidden;font-family:'General Sans',sans-serif;font-size:14px;white-space:nowrap;display:block">{{ lnk.sizer }}</span>
+            <span style="{{ lnk.labelStyle }}">{{ lnk.label }}</span>
+          </a>
+        </sc-for>
+      </div>
+      <a href="#contact" style="position:relative;background:#f5f4ef;color:#1c1d19;text-decoration:none;font-weight:600;letter-spacing:0;padding:11px 22px;border-radius:999px;transition:all .18s;white-space:nowrap;margin-inline-start:6px" style-hover="background:#d9f64a" style-active="transform:scale(.97)">
+        <span style="visibility:hidden;font-family:'General Sans',sans-serif;font-size:14px;white-space:nowrap;display:block">Book a Trial</span>
+        <span style="{{ ctaLabelStyle }}">{{ navCta }}</span>
+      </a>
+      <button onClick="{{ toggleLang }}" title="{{ langToggleTitle }}" style="{{ langToggleStyle }}" style-hover="background:#45463f;color:#d9f64a">{{ langToggleLabel }}</button>
+    </nav>
+  </div>
+
+  <div style="position:relative;z-index:1;background:#f5f4ef;box-shadow:0 30px 80px rgba(16,18,16,.35)">
+  <!-- ============ HERO ============ -->
+  <section id="top" data-screen-label="Hero" style="background:#f5f4ef">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:26px {{ heroPadX }} 0">
+      <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#12140f">
+        <img src="assets/logo-dark.svg" alt="" style="height:32px;width:auto;display:block">
+        <span style="font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:20px;letter-spacing:.02em">AHNOUD</span>
+      </a>
+      <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#565850">{{ t.heroBadge }}</span>
+    </div>
+    <div style="display:grid;grid-template-columns:{{ cols2a }};gap:{{ gridGap }};align-items:end;padding:72px {{ heroPadX }} 0">
+      <h1 style="margin:0;font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ h1Size }};line-height:{{ lhHead }};text-transform:uppercase;letter-spacing:{{ trackHead }};animation:ahnRise .7s cubic-bezier(.22,.61,.36,1) .05s both">{{ t.heroH }}</h1>
+      <p style="margin:0;font-size:16px;line-height:1.65;color:#565850;max-width:400px;justify-self:{{ selfEnd }};animation:ahnRise .7s cubic-bezier(.22,.61,.36,1) .18s both">{{ t.heroSub }}</p>
+    </div>
+    <div style="display:grid;grid-template-columns:{{ cols2a }};gap:{{ gridGap }};align-items:start;padding:44px {{ heroPadX }} 0">
+      <div style="border-top:1px solid rgba(18,20,15,.2);padding-top:22px;display:flex;flex-direction:column;gap:8px;animation:ahnRise .7s cubic-bezier(.22,.61,.36,1) .3s both">
+        <sc-for list="{{ heroList }}" as="hl" hint-placeholder-count="3">
+          <span style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#565850">{{ hl }}</span>
+        </sc-for>
+      </div>
+      <div style="border-top:1px solid rgba(18,20,15,.2);padding-top:22px;display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:24px;animation:ahnRise .7s cubic-bezier(.22,.61,.36,1) .3s both">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#8a8c80">{{ heroStatLabel }}</span>
+          <span style="font-size:18px;color:#12140f">{{ heroStatValue }}</span>
+        </div>
+        <a href="#contact" style="display:inline-flex;align-items:center;gap:12px;border:1px solid rgba(18,20,15,.4);color:#12140f;text-decoration:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:{{ trackWide }};padding:14px 22px;border-radius:9px;transition:all .2s;white-space:nowrap" style-hover="background:#d9f64a;color:#12140f;border-color:#d9f64a;gap:18px">{{ t.cta1 }}<span style="font-size:16px;font-weight:400;line-height:1">+</span></a>
+      </div>
+    </div>
+    <div style="position:relative;overflow:hidden;height:72vh;min-height:520px;margin-top:56px;background:repeating-linear-gradient(45deg,#e9e7df 0px,#e9e7df 14px,#dfddd2 14px,#dfddd2 28px);display:flex;align-items:center;justify-content:center;animation:ahnFade .9s ease .25s both">
+      <span style="font-size:12px;color:#7a7a6f;background:rgba(255,255,255,.75);padding:6px 12px;border-radius:6px">[ hero — player action shot ]</span>
+      <img id="hero-img" src="{{ heroImg }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.1);will-change:transform">
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <div dir="ltr" style="background:#101210;overflow:hidden;padding:20px 0">
+    <div style="display:flex;gap:44px;width:max-content;animation:ahnMarquee 26s linear infinite" style-hover="animation-play-state:paused">
+      <div style="display:flex;gap:44px;align-items:center">
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#d9f64a;white-space:nowrap">Ahnoud Academy</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#f5f4ef;white-space:nowrap">Tennis</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#f5f4ef;white-space:nowrap">Padel</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#d9f64a;white-space:nowrap">Ahnoud Academy</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#f5f4ef;white-space:nowrap">Tennis</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#f5f4ef;white-space:nowrap">Padel</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+      </div>
+      <div style="display:flex;gap:44px;align-items:center">
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#d9f64a;white-space:nowrap">Ahnoud Academy</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#f5f4ef;white-space:nowrap">Tennis</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#f5f4ef;white-space:nowrap">Padel</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#d9f64a;white-space:nowrap">Ahnoud Academy</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#f5f4ef;white-space:nowrap">Tennis</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+        <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#f5f4ef;white-space:nowrap">Padel</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" data-screen-label="About" style="background:#101210;color:#f5f4ef;padding:150px 0 110px;overflow:hidden">
+    <div style="position:relative;margin:0 {{ aboutFrameX }}">
+      <div style="position:relative;overflow:hidden;height:74vh;min-height:480px;border-radius:12px;background:repeating-linear-gradient(45deg,#1c1e1a 0px,#1c1e1a 14px,#23251f 14px,#23251f 28px);display:flex;align-items:center;justify-content:center">
+        <span style="font-size:12px;color:#8a8c80;background:rgba(16,18,16,.7);padding:6px 12px;border-radius:6px">[ courts — wide shot ]</span>
+        <img src="{{ aboutImg }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        <div style="position:absolute;inset:0;background:rgba(16,18,16,.3)"></div>
+      </div>
+      <div style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:center;transform:translateY(-54%);z-index:2;pointer-events:none">
+        <span data-reveal="1" style="font-family:{{ headFont }};font-weight:700;font-size:{{ awBig }};line-height:1;text-transform:uppercase;letter-spacing:{{ trackHead }};color:rgba(245,244,239,.94);white-space:nowrap">{{ aw1 }}</span>
+      </div>
+      <div style="position:absolute;top:46%;left:0;transform:translate(-34%,-50%);z-index:2;pointer-events:none">
+        <span data-reveal="1" style="display:inline-block;font-family:{{ headFont }};font-weight:700;font-size:{{ awSide }};line-height:1;text-transform:uppercase;letter-spacing:{{ trackHead }};color:rgba(245,244,239,.9);white-space:nowrap">{{ aw2 }}</span>
+      </div>
+      <div style="position:absolute;top:46%;right:0;transform:translate(34%,-50%);z-index:2;pointer-events:none">
+        <span data-reveal="1" style="display:inline-block;font-family:{{ headFont }};font-weight:700;font-size:{{ awSide }};line-height:1;text-transform:uppercase;letter-spacing:{{ trackHead }};color:rgba(245,244,239,.9);white-space:nowrap">{{ aw3 }}</span>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:center;transform:translateY(46%);z-index:2;pointer-events:none">
+        <span data-reveal="1" style="font-family:{{ headFont }};font-weight:700;font-size:{{ awBig }};line-height:1;text-transform:uppercase;letter-spacing:{{ trackHead }};color:rgba(245,244,239,.94);white-space:nowrap">{{ aw4 }}</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;margin:120px {{ padX }} 0;border-top:1px solid rgba(245,244,239,.14);padding-top:26px">
+      <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#a9ac9f">{{ t.aboutBadge }}</span>
+      <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#a9ac9f">{{ aboutStat }}</span>
+    </div>
+    <div data-reveal="1" style="display:grid;grid-template-columns:{{ cols2 }};gap:{{ gridGap }};margin:56px {{ padX }} 0;align-items:start">
+      <h2 style="margin:0;font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ aboutH2Size }};line-height:{{ lhHead2 }};text-transform:uppercase;letter-spacing:{{ trackHead }}">{{ t.aboutH }}</h2>
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <p style="margin:0;font-size:16.5px;line-height:1.7;color:#c9ccbf;max-width:540px">{{ t.aboutP }}</p>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ bullets }}" as="b" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:14px">
+              <span style="width:12px;height:12px;background:#d9f64a;flex:none"></span>
+              <span style="font-size:15.5px;font-weight:600">{{ b.txt }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROGRAMS ============ -->
+  <section id="programs" data-screen-label="Programs" style="padding:150px 0 160px;overflow:hidden">
+    <div data-reveal="1" style="padding:0 {{ padX }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(18,20,15,.2);padding-top:22px">
+        <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#565850">{{ t.programsBadge }}</span>
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#8a8c80">( 02 )</span>
+      </div>
+      <div style="display:grid;grid-template-columns:{{ cols2a }};gap:{{ gridGap }};align-items:end;margin-top:64px">
+        <h2 style="margin:0;font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ h2Size }};line-height:{{ lhHead2 }};text-transform:uppercase;letter-spacing:{{ trackHead }};display:flex;flex-direction:column;gap:6px">
+          <span>{{ progLine1 }}</span>
+          <span style="display:flex;align-items:center;gap:.26em"><span style="width:.3em;height:.3em;background:#d9f64a;flex:none"></span><span>{{ progLine2 }}</span></span>
+        </h2>
+        <div style="display:flex;align-items:flex-end;gap:clamp(24px,2.6vw,44px);justify-self:{{ tabsSelf }}">
+          <button onClick="{{ tabA.onClick }}" style="{{ tabA.style }}" style-hover="color:#12140f"><span style="font-size:11px;font-weight:400;letter-spacing:.14em;color:inherit">01</span><span>{{ tabA.label }}</span></button>
+          <span style="font-family:{{ headFont }};font-weight:700;font-size:{{ tabSlashSize }};line-height:1;color:rgba(18,20,15,.22);padding-bottom:19px">/</span>
+          <button onClick="{{ tabB.onClick }}" style="{{ tabB.style }}" style-hover="color:#12140f"><span style="font-size:11px;font-weight:400;letter-spacing:.14em;color:inherit">02</span><span>{{ tabB.label }}</span></button>
+        </div>
+      </div>
+    </div>
+    <div data-reveal-stagger="1" style="display:flex;flex-direction:column;gap:10px;margin-top:80px;padding:0 10px">
+      <sc-for list="{{ programs }}" as="pg" hint-placeholder-count="3">
+        <div onMouseEnter="{{ pg.onEnter }}" onMouseLeave="{{ pg.onLeave }}" style="position:relative;overflow:hidden;height:{{ progRowH }};border-radius:12px;background:repeating-linear-gradient(45deg,#1c1e1a 0px,#1c1e1a 14px,#23251f 14px,#23251f 28px);cursor:pointer">
+        <img src="{{ pg.img }}" alt="" style="{{ pg.imgStyle }}">
+        <div style="position:absolute;inset:0;background:rgba(16,18,16,.38)"></div>
+        <div style="position:absolute;top:50%;left:18px;right:18px;height:1px;background:rgba(245,244,239,.32)"></div>
+        <div style="{{ pg.titleStyle }}">
+          <span style="font-family:{{ headFont }};font-weight:700;font-size:{{ progNameSize }};text-transform:uppercase;letter-spacing:{{ trackWide }};color:#f5f4ef">{{ pg.name }}</span>
+        </div>
+        <span style="{{ pg.tagStyle }}">+ {{ pg.level }}</span>
+        <span style="{{ pg.plusStyle }}">+</span>
+        <div style="{{ pg.panelStyle }}">
+          <span style="flex:1;font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:#d9f64a;white-space:nowrap">+ {{ pg.level }} · {{ pg.dur }}</span>
+          <span style="border:1px solid rgba(245,244,239,.4);border-radius:9px;padding:10px 20px;font-family:{{ headFont }};font-weight:700;font-size:18px;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#f5f4ef;white-space:nowrap">{{ pg.name }}</span>
+          <span style="display:{{ progDescDisplay }};flex:1;font-size:13px;line-height:1.55;color:#c9ccbf;max-width:360px;text-align:end">{{ pg.desc }}</span>
+        </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ============ COACHES ============ -->
+  <section id="coaches" data-screen-label="Coaches" style="padding:0 0 130px">
+    <div data-reveal="1" style="padding:0 {{ padX }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(18,20,15,.2);padding-top:22px">
+        <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#565850">{{ t.coachesBadge }}</span>
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#8a8c80">( 03 )</span>
+      </div>
+      <div style="display:grid;grid-template-columns:{{ cols2a }};gap:{{ gridGap }};align-items:end;margin-top:48px">
+        <h2 style="margin:0;font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ h2Size }};line-height:{{ lhHead }};text-transform:uppercase;letter-spacing:{{ trackHead }}">{{ t.coachesH }}</h2>
+        <p style="margin:0;font-size:16px;line-height:1.65;color:#565850;max-width:400px;justify-self:{{ selfEnd }}">{{ t.coachesSub }}</p>
+      </div>
+      <div data-reveal-stagger="1" class="ahn-rail" style="{{ railStyle }}">
+        <sc-for list="{{ coaches }}" as="c" hint-placeholder-count="4">
+          <div style="{{ railItemStyle }}" style-hover="transform:translateY(-6px)">
+            <div style="position:relative;overflow:hidden;aspect-ratio:3/3.6;border-radius:12px;background:repeating-linear-gradient(45deg,#e9e7df 0px,#e9e7df 14px,#dfddd2 14px,#dfddd2 28px);display:flex;align-items:center;justify-content:center">
+              <span style="font-size:11.5px;color:#7a7a6f;background:rgba(255,255,255,.75);padding:5px 10px;border-radius:6px">[ portrait ]</span>
+              <img src="{{ c.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.25,.1,.25,1)" style-hover="transform:scale(1.06)">
+            </div>
+            <div style="border-top:1px solid rgba(18,20,15,.2);padding-top:14px;display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                <span style="font-size:11px;letter-spacing:.14em;color:#8a8c80">{{ c.num }}</span>
+                <span style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#5f7014;white-space:nowrap">+ {{ c.role }}</span>
+              </div>
+              <span style="font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:21px;text-transform:uppercase;letter-spacing:{{ trackHead }}">{{ c.name }}</span>
+              <span style="font-size:13.5px;color:#565850;line-height:1.5">{{ c.cred }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FACILITIES (dark) ============ -->
+  <section id="facilities" data-screen-label="Facilities" style="background:#101210;color:#f5f4ef;padding:120px 0 130px">
+    <div data-reveal="1" style="padding:0 {{ padX }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(245,244,239,.14);padding-top:26px">
+        <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#a9ac9f">{{ t.facBadge }}</span>
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#8a8c80">( 04 )</span>
+      </div>
+      <h2 style="margin:48px 0 0;font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ h2Size }};line-height:{{ lhHead }};text-transform:uppercase;letter-spacing:{{ trackHead }};max-width:900px">{{ t.facH }}</h2>
+      <div data-reveal-stagger="1" style="display:flex;flex-direction:column;margin-top:64px">
+        <sc-for list="{{ facilities }}" as="f" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:{{ facCols }};gap:clamp(20px,4vw,56px);align-items:center;border-top:1px solid rgba(245,244,239,.14);padding:20px 0;transition:background .2s,padding .25s ease" style-hover="background:#15171372;padding-inline-start:14px">
+            <span style="font-size:11px;letter-spacing:.14em;color:#8a8c80;width:28px">{{ f.num }}</span>
+            <span style="font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ facNameSize }};text-transform:uppercase;letter-spacing:{{ trackHead }}">{{ f.name }}</span>
+            <span style="grid-column:{{ facDescCol }};font-size:14.5px;line-height:1.6;color:#a9ac9f;max-width:420px">{{ f.desc }}</span>
+            <div style="position:relative;overflow:hidden;width:150px;height:96px;border-radius:12px;flex:none;background:repeating-linear-gradient(45deg,#22261f 0px,#22261f 14px,#1b1e19 14px,#1b1e19 28px);display:{{ facImgDisplay }};align-items:center;justify-content:center">
+              <span style="font-size:10.5px;color:#8d9184">{{ f.ph }}</span>
+              <img src="{{ f.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.25,.1,.25,1)" style-hover="transform:scale(1.08)">
+            </div>
+          </div>
+        </sc-for>
+        <div style="border-top:1px solid rgba(245,244,239,.14)"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SHOP ============ -->
+  <section id="shop" data-screen-label="Shop" style="padding:120px 0 130px">
+    <div data-reveal="1" style="padding:0 {{ padX }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(18,20,15,.2);padding-top:22px">
+        <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#565850">{{ t.priceBadge }}</span>
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#8a8c80">( 05 )</span>
+      </div>
+      <div style="display:grid;grid-template-columns:{{ cols2a }};gap:{{ gridGap }};align-items:end;margin-top:48px">
+        <h2 style="margin:0;font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ h2Size }};line-height:{{ lhHead }};text-transform:uppercase;letter-spacing:{{ trackHead }}">{{ t.priceH }}</h2>
+        <p style="margin:0;font-size:13px;line-height:1.7;color:#8b8d80;max-width:340px;justify-self:{{ selfEnd }}">{{ t.priceNote }}</p>
+      </div>
+      <div data-reveal-stagger="1" class="ahn-rail" style="{{ railStyle }}">
+        <sc-for list="{{ shopItems }}" as="s" hint-placeholder-count="4">
+          <div style="{{ railItemStyle }}" style-hover="transform:translateY(-6px)">
+            <div style="position:relative;overflow:hidden;aspect-ratio:3/3.4;border-radius:12px;background:repeating-linear-gradient(45deg,#e9e7df 0px,#e9e7df 14px,#dfddd2 14px,#dfddd2 28px);display:flex;align-items:center;justify-content:center">
+              <span style="font-size:11.5px;color:#7a7a6f;background:rgba(255,255,255,.75);padding:5px 10px;border-radius:6px">{{ s.ph }}</span>
+              <img src="{{ s.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.25,.1,.25,1)" style-hover="transform:scale(1.06)">
+            </div>
+            <div style="border-top:1px solid rgba(18,20,15,.2);padding-top:14px;display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                <span style="font-size:11px;letter-spacing:.14em;color:#8a8c80">{{ s.num }}</span>
+                <span style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#5f7014;white-space:nowrap">+ {{ s.tag }}</span>
+              </div>
+              <span style="font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:21px;text-transform:uppercase;letter-spacing:{{ trackHead }}">{{ s.name }}</span>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px">
+                <span style="font-size:15px;font-weight:600">{{ s.price }}</span>
+                <a href="#contact" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#12140f;text-decoration:none;border:1px solid rgba(18,20,15,.4);border-radius:7px;padding:8px 14px;transition:all .2s" style-hover="background:#d9f64a;border-color:#d9f64a">{{ t.shopCta }}</a>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCHEDULE ============ -->
+  <section id="schedule" data-screen-label="Schedule" style="padding:0 0 130px">
+    <div data-reveal="1" style="padding:0 {{ padX }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(18,20,15,.2);padding-top:22px">
+        <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#565850">{{ t.schedBadge }}</span>
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#8a8c80">( 06 )</span>
+      </div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-top:48px;flex-wrap:wrap">
+        <h2 style="margin:0;font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ h2Size }};line-height:{{ lhHead }};text-transform:uppercase;letter-spacing:{{ trackHead }}">{{ t.schedH }}</h2>
+        <a href="#contact" style="display:inline-flex;align-items:center;gap:12px;border:1px solid rgba(18,20,15,.4);color:#12140f;text-decoration:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:{{ trackWide }};padding:14px 22px;border-radius:9px;transition:all .2s;white-space:nowrap" style-hover="background:#d9f64a;color:#12140f;border-color:#d9f64a;gap:18px">{{ t.schedCta }}<span style="font-size:16px;font-weight:400;line-height:1">+</span></a>
+      </div>
+      <div data-reveal-stagger="1" style="display:flex;flex-direction:column;margin-top:56px">
+        <sc-for list="{{ schedule }}" as="row" hint-placeholder-count="4">
+          <div style="display:grid;grid-template-columns:{{ schedCols }};gap:20px;align-items:center;border-top:1px solid rgba(18,20,15,.2);padding:24px 0;transition:background .2s,padding .25s ease" style-hover="background:#eeede6;padding-inline-start:14px">
+            <span style="font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:{{ trackHead }}">{{ row.name }}</span>
+            <span style="font-size:14px;color:#565850">{{ row.days }}</span>
+            <span style="font-size:13px;font-variant-numeric:tabular-nums;color:#12140f">{{ row.time }}</span>
+            <span style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#5f7014;justify-self:end;white-space:nowrap">+ {{ row.tag }}</span>
+          </div>
+        </sc-for>
+        <div style="border-top:1px solid rgba(18,20,15,.2)"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section data-screen-label="Testimonials" style="padding:0 0 130px">
+    <div data-reveal="1" style="padding:0 {{ padX }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(18,20,15,.2);padding-top:22px">
+        <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#565850">{{ t.quotesBadge }}</span>
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#8a8c80">( 07 )</span>
+      </div>
+      <h2 style="margin:48px 0 0;font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ h2Size }};line-height:{{ lhHead }};text-transform:uppercase;letter-spacing:{{ trackHead }}">{{ t.quotesH }}</h2>
+      <div data-reveal-stagger="1" style="display:grid;grid-template-columns:{{ threeCols }};gap:clamp(24px,3vw,44px);margin-top:64px">
+        <sc-for list="{{ quotes }}" as="q" hint-placeholder-count="3">
+          <div style="border-top:1px solid rgba(18,20,15,.2);padding-top:24px;display:flex;flex-direction:column;gap:24px;transition:transform .3s ease" style-hover="transform:translateY(-4px)">
+            <p style="margin:0;font-size:17px;line-height:1.65;flex:1">{{ q.txt }}</p>
+            <div style="display:flex;align-items:center;gap:14px">
+              <span style="width:12px;height:12px;background:#d9f64a;flex:none"></span>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-size:14.5px;font-weight:700">{{ q.name }}</span>
+                <span style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#5f7014">+ {{ q.role }}</span>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq" data-screen-label="FAQ" style="padding:0 0 130px">
+    <div data-reveal="1" style="padding:0 {{ padX }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(18,20,15,.2);padding-top:22px">
+        <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#565850">{{ t.faqBadge }}</span>
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#8a8c80">( 08 )</span>
+      </div>
+      <div style="display:grid;grid-template-columns:{{ colsFaq }};gap:{{ gridGap }};margin-top:48px;align-items:start">
+        <h2 style="margin:0;font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ h2Size }};line-height:{{ lhHead }};text-transform:uppercase;letter-spacing:{{ trackHead }}">{{ t.faqH }}</h2>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ faqs }}" as="fq" hint-placeholder-count="5">
+            <div style="{{ fq.cardStyle }}">
+              <button onClick="{{ fq.onToggle }}" style="all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%;padding:24px 0;transition:padding .25s ease" style-hover="padding-inline-start:10px">
+                <span style="font-size:17px;font-weight:700">{{ fq.q }}</span>
+                <span style="{{ fq.iconStyle }}">+</span>
+              </button>
+              <div style="{{ fq.bodyStyle }}">
+                <p style="margin:0;padding:0 0 26px;font-size:15px;line-height:1.7;color:#565850;max-width:560px">{{ fq.a }}</p>
+              </div>
+            </div>
+          </sc-for>
+          <div style="border-top:1px solid rgba(18,20,15,.2)"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" data-screen-label="Contact" style="padding:0 0 140px">
+    <div data-reveal="1" style="padding:0 {{ padX }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(18,20,15,.2);padding-top:22px">
+        <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#565850">{{ t.contactBadge }}</span>
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#8a8c80">( 09 )</span>
+      </div>
+      <div style="display:grid;grid-template-columns:{{ cols2b }};gap:{{ gridGap }};margin-top:48px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:32px">
+          <h2 style="margin:0;font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ h2Size }};line-height:{{ lhHead }};text-transform:uppercase;letter-spacing:{{ trackHead }}">{{ t.contactH }}</h2>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <sc-for list="{{ contactRows }}" as="cr" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid rgba(18,20,15,.2);padding-top:16px">
+                <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#8a8c80">{{ cr.label }}</span>
+                <span style="font-size:18px;font-weight:600">{{ cr.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:14px">
+            <a href="#top" style="display:inline-flex;align-items:center;gap:12px;background:#12140f;color:#d9f64a;text-decoration:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:{{ trackWide }};padding:16px 26px;border-radius:9px;transition:all .2s;white-space:nowrap" style-hover="background:#d9f64a;color:#12140f;gap:18px">{{ t.cta1 }}<span style="font-size:16px;font-weight:400;line-height:1">+</span></a>
+          </div>
+        </div>
+        <div style="height:{{ mapH }};border-radius:12px;background:repeating-linear-gradient(45deg,#e9e7df 0px,#e9e7df 14px,#dfddd2 14px,#dfddd2 28px);display:flex;align-items:center;justify-content:center">
+          <span style="font-size:12px;color:#7a7a6f;background:rgba(255,255,255,.75);padding:6px 12px;border-radius:6px">[ map — academy location ]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </div>
+
+  <!-- ============ FOOTER (revealed on scroll) ============ -->
+  <footer data-screen-label="Footer" style="position:sticky;bottom:0;z-index:0;background:#101210;color:#f5f4ef;padding:48px 0 32px;overflow:clip">
+    <div style="padding:0 {{ padX }}">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(245,244,239,.14);padding-top:22px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <img src="assets/logo-lime.svg" alt="" style="height:24px;width:auto;display:block">
+          <span style="font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em">Ahnoud</span>
+        </div>
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#8a8c80">( 10 )</span>
+      </div>
+      <div style="display:grid;grid-template-columns:{{ footCols }};gap:48px;margin-top:56px">
+        <div style="grid-column:{{ footBrandCol }};display:flex;flex-direction:column;align-items:flex-start;gap:26px">
+          <h2 style="margin:0;font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ aboutH2Size }};line-height:{{ lhHead }};text-transform:uppercase;letter-spacing:{{ trackHead }};max-width:420px">{{ footH }}</h2>
+          <a href="#contact" style="display:inline-flex;align-items:center;gap:12px;background:#d9f64a;color:#12140f;text-decoration:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:{{ trackWide }};padding:15px 26px;border-radius:9px;transition:all .2s;white-space:nowrap" style-hover="background:#f5f4ef;gap:18px">{{ t.cta1 }}<span style="font-size:16px;font-weight:400;line-height:1">+</span></a>
+          <p style="margin:0;font-size:13.5px;line-height:1.65;color:#a9ac9f;max-width:300px">{{ t.footTagline }}</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#d9f64a">{{ t.footExplore }}</span>
+          <sc-for list="{{ footNavLinks }}" as="lnk" hint-placeholder-count="6">
+            <a href="{{ lnk.href }}" style="color:#c9ccbf;text-decoration:none;font-size:14px;transition:color .2s,padding .2s ease" style-hover="color:#d9f64a;padding-inline-start:4px">{{ lnk.label }}</a>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#d9f64a">{{ t.footPrograms }}</span>
+          <sc-for list="{{ footProgramLinks }}" as="fp" hint-placeholder-count="4">
+            <span style="color:#c9ccbf;font-size:14px">{{ fp.txt }}</span>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#d9f64a">{{ t.footFollow }}</span>
+          <a href="#top" style="color:#c9ccbf;text-decoration:none;font-size:14px;transition:color .2s,padding .2s ease" style-hover="color:#d9f64a;padding-inline-start:4px">Instagram</a>
+          <a href="#top" style="color:#c9ccbf;text-decoration:none;font-size:14px;transition:color .2s,padding .2s ease" style-hover="color:#d9f64a;padding-inline-start:4px">WhatsApp</a>
+          <a href="#top" style="color:#c9ccbf;text-decoration:none;font-size:14px;transition:color .2s,padding .2s ease" style-hover="color:#d9f64a;padding-inline-start:4px">Telegram</a>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;margin-top:64px">
+        <span style="font-family:{{ headFont }};font-style:normal;font-weight:700;font-size:{{ wordmarkSize }};line-height:.9;text-transform:uppercase;letter-spacing:{{ trackHead }};color:rgba(245,244,239,.96);white-space:nowrap">{{ footWordmark }}</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid rgba(245,244,239,.14);padding-top:22px;margin-top:48px;flex-wrap:wrap">
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#8d9184">{{ t.footCopy }}</span>
+        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#8d9184">{{ t.footMade }}</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lang: 'en',
+      tab: 'padel',
+      deviceMode: 'auto',
+      padelFirst: true,
+      twOpen: false,
+      faqOpen: 0,
+      active: 'top',
+      progHover: -1,
+      vw: typeof window === 'undefined' ? 1440 : window.innerWidth
+    };
+  }
+
+  componentDidMount() {
+    // Restore tweaks
+    try {
+      const tw = JSON.parse(localStorage.getItem('ahnoud-tweaks') || '{}');
+      const patch = {};
+      if (['auto', 'desktop', 'tablet', 'mobile'].indexOf(tw.deviceMode) >= 0) patch.deviceMode = tw.deviceMode;
+      if (typeof tw.padelFirst === 'boolean') { patch.padelFirst = tw.padelFirst; patch.tab = tw.padelFirst ? 'padel' : 'tennis'; }
+      if (Object.keys(patch).length) this.setState(patch);
+    } catch (e) {}
+    document.addEventListener('error', (e) => {
+      if (e.target && e.target.tagName === 'IMG') e.target.style.display = 'none';
+    }, true);
+    try {
+      const saved = localStorage.getItem('ahnoud-lang');
+      if (saved && saved !== this.state.lang && (saved === 'en' || saved === 'fa')) {
+        this.setState({ lang: saved });
+      }
+    } catch (e) {}
+    // Re-measure nav label widths once webfonts finish loading
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.forceUpdate());
+    // Scroll spy for floating nav
+    this._onScroll = () => {
+      let cur = 'top';
+      document.querySelectorAll('section[id]').forEach((s) => {
+        if (s.getBoundingClientRect().top <= window.innerHeight * 0.45) cur = s.id;
+      });
+      const hi = document.getElementById('hero-img');
+      if (hi) hi.style.transform = 'scale(1.1) translateY(' + Math.min(44, window.scrollY * 0.08) + 'px)';
+      if (cur !== this.state.active) this.setState({ active: cur });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    this._onScroll();
+    // Track viewport width for responsive layout
+    this._onResize = () => {
+      if (window.innerWidth !== this.state.vw) this.setState({ vw: window.innerWidth });
+    };
+    window.addEventListener('resize', this._onResize);
+    this._onResize();
+    requestAnimationFrame(() => this._onResize());
+    // Scroll reveal
+    const els = document.querySelectorAll('[data-reveal]');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          en.target.style.opacity = '1';
+          en.target.style.transform = 'translateY(0)';
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    els.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      if (r.top > window.innerHeight * 0.9) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(28px)';
+        el.style.transition = 'opacity .7s ease, transform .7s ease';
+        io.observe(el);
+      }
+    });
+    // Staggered reveal for grids & lists
+    const groups = document.querySelectorAll('[data-reveal-stagger]');
+    const gio = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          Array.prototype.forEach.call(en.target.children, (ch, i) => {
+            setTimeout(() => {
+              ch.style.transition = 'opacity .6s cubic-bezier(.25,.1,.25,1), transform .6s cubic-bezier(.25,.1,.25,1)';
+              ch.style.opacity = '1';
+              ch.style.transform = 'translateY(0)';
+              setTimeout(() => {
+                ch.style.transition = ch.dataset.ogTransition || '';
+                ch.style.opacity = '';
+                ch.style.transform = '';
+              }, 660);
+            }, i * 90);
+          });
+          gio.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    groups.forEach((g) => {
+      const r = g.getBoundingClientRect();
+      if (r.top <= window.innerHeight * 0.9) return;
+      Array.prototype.forEach.call(g.children, (ch) => {
+        ch.dataset.ogTransition = ch.style.transition || '';
+        ch.style.opacity = '0';
+        ch.style.transform = 'translateY(26px)';
+      });
+      gio.observe(g);
+    });
+  }
+
+  copy() {
+    return {
+      en: {
+        navLinks: [
+          { label: 'About', href: '#about' },
+          { label: 'Programs', href: '#programs' },
+          { label: 'Coaches', href: '#coaches' },
+          { label: 'Facilities', href: '#facilities' },
+          { label: 'Shop', href: '#shop' },
+          { label: 'Contact', href: '#contact' }
+        ],
+        navCta: 'Book a Trial',
+        heroBadge: 'Tennis · Padel Academy',
+        heroW1: 'Master', heroW2: 'Every', heroW3: 'Point',
+        heroH: 'An academy built for serious play',
+        heroSub: 'Ahnoud Academy pairs world-class tennis and padel coaching with courts engineered to tournament standard — for players who take their game seriously.',
+        cta1: 'Book a Trial Session', cta2: 'Explore Programs',
+        stats: [
+          { v: '10', l: 'Championship courts' },
+          { v: '14', l: 'Pro coaches' },
+          { v: '500+', l: 'Players trained' }
+        ],
+        aboutBadge: 'Who we are',
+        aboutH: 'Precision in every detail',
+        aboutP: 'Ahnoud is built on one belief: progress is a product of environment. Court surfaces, training design, match analysis — every element of the academy is engineered around your game.',
+        bullets: [
+          { txt: 'Tournament-grade playing surfaces' },
+          { txt: 'Data-driven coaching with video analysis' },
+          { txt: 'A private club culture, members first' }
+        ],
+        aboutVideoCap: 'Inside a day at Ahnoud',
+        programsBadge: 'Programs',
+        programsH: 'Two games. One standard.',
+        tabTennis: 'Tennis', tabPadel: 'Padel',
+        tennis: [
+          { name: 'Private Coaching', desc: 'One-on-one sessions with video analysis and an individual development plan for every player.', level: 'All levels', dur: '60 min', ph: '[ private lesson ]' },
+          { name: 'Performance Squad', desc: 'Invite-only competitive training group. Tour-level intensity, periodised across the season.', level: 'Advanced', dur: '120 min', ph: '[ squad training ]' },
+          { name: 'Adult Clinics', desc: 'Small-group technical sessions — never more than four players per court.', level: 'Intermediate', dur: '90 min', ph: '[ adult clinic ]' }
+        ],
+        padel: [
+          { name: 'Padel Foundations', desc: 'Footwork, glass play and core tactics — the fastest route into the game.', level: 'Beginner', dur: '60 min', ph: '[ padel intro ]' },
+          { name: 'Competitive Padel', desc: 'Match tactics and tournament preparation for established pairs.', level: 'Advanced', dur: '90 min', ph: '[ padel match ]' },
+          { name: 'Open Match Play', desc: 'Hosted evening matches with level-matched pairings and courtside hospitality.', level: 'All levels', dur: '120 min', ph: '[ match night ]' }
+        ],
+        coachesBadge: 'The team',
+        coachesH: 'Coached by the best',
+        coachesSub: 'Every Ahnoud coach holds international certification and an active playing background at competitive level.',
+        coaches: [
+          { name: 'Arman Rahimi', role: 'Head of Tennis', cred: 'Former ATP touring pro · 15 yrs coaching' },
+          { name: 'Sara Mohammadi', role: 'Padel Director', cred: 'FIP certified · National team coach' },
+          { name: 'Diego Álvarez', role: 'Performance Coach', cred: 'Strength & conditioning specialist' },
+          { name: 'Niloufar Kaviani', role: 'High-Performance Tennis', cred: 'ITF Level 3 · Analytics-led training' }
+        ],
+        facBadge: 'Facilities',
+        facH: 'Built to tournament standard',
+        facilities: [
+          { name: '8 Hard Courts', desc: 'ITF-rated cushioned acrylic with match-grade floodlighting.', ph: '[ hard courts ]' },
+          { name: '2 Tennis Clay Courts', desc: 'European red clay, groomed and watered daily.', ph: '[ clay courts ]' },
+          { name: '6 Panoramic Padel Courts', desc: 'Full-glass walls built to WPT specification.', ph: '[ padel courts ]' },
+          { name: 'Recovery Lounge', desc: 'Ice bath, sauna and in-house physiotherapy suite.', ph: '[ recovery ]' },
+          { name: 'Pro Shop & Café', desc: 'Same-day stringing service and courtside espresso.', ph: '[ pro shop ]' }
+        ],
+        priceBadge: 'Shop',
+        priceH: 'Wear the standard',
+        shopCta: 'Enquire',
+        priceNote: 'Academy-exclusive gear — available on site at the pro shop.',
+        shop: [
+          { name: 'Academy Kit', tag: 'Apparel', price: '$85', ph: '[ apparel ]' },
+          { name: 'Signature Racket', tag: 'Exclusive', price: '$210', ph: '[ racket ]' },
+          { name: 'Match Balls', tag: 'Court', price: '$12', ph: '[ balls ]' },
+          { name: 'Club Holdall', tag: 'Accessories', price: '$95', ph: '[ bag ]' }
+        ],
+        schedBadge: 'Weekly schedule',
+        schedH: 'On court, every day',
+        schedCta: 'Request full schedule',
+        schedule: [
+          { name: 'Morning Drills', days: 'Monday – Friday', time: '7:00 – 9:00', tag: 'Tennis' },
+          { name: 'Adult Clinics', days: 'Mon · Wed · Thu', time: '18:00 – 19:30', tag: 'Tennis' },
+          { name: 'Performance Squad', days: 'Tue · Thu · Sat', time: '17:00 – 19:00', tag: 'Tennis' },
+          { name: 'Open Padel Night', days: 'Friday', time: '20:00 – 23:00', tag: 'Padel' }
+        ],
+        quotesBadge: 'Members',
+        quotesH: 'Word from the court',
+        quotes: [
+          { txt: 'The coaching detail here is unlike anywhere I have trained. My serve was rebuilt in eight weeks.', name: 'Kian R.', role: 'Performance Squad' },
+          { txt: 'Padel nights are the highlight of my week. Competitive, social, and impeccably run.', name: 'Leila T.', role: 'Club Member' },
+          { txt: 'Court quality and scheduling are flawless. A private club with pro-tour standards.', name: 'Marco D.', role: 'Elite Member' }
+        ],
+        faqBadge: 'FAQ',
+        faqH: 'Before you visit',
+        faqs: [
+          { q: 'Do I need to be a member to book a trial?', a: 'No. Your first session is open to everyone — book a trial and a coach will assess your level and recommend the right program.' },
+          { q: 'What level do I need to join?', a: 'Programs run from complete beginner to national-level competition. Every new player receives a level assessment on their first visit.' },
+          { q: 'Do you provide rackets and balls?', a: 'Yes — demo rackets for both tennis and padel, plus match balls, are included in every coached session.' },
+          { q: 'How does court booking work?', a: 'Members book through the academy app or front desk, up to seven days in advance. Elite members get priority windows.' },
+          { q: 'I have never played padel — where do I start?', a: 'Padel Foundations was designed exactly for that. Most players are rallying comfortably by the end of their first hour.' }
+        ],
+        contactBadge: 'Contact',
+        contactH: 'Find us courtside',
+        contactRows: [
+          { label: 'Address', value: 'Ahnoud Academy, [street address], [city]' },
+          { label: 'Phone', value: '+98 (0)21 ··· ····' },
+          { label: 'Email', value: 'hello@ahnoud.academy' },
+          { label: 'Hours', value: 'Daily, 6:30 – 23:00' }
+        ],
+        footTagline: 'A tennis and padel academy engineered around the serious player.',
+        footExplore: 'Explore',
+        footPrograms: 'Programs',
+        footProgramLinks: [
+          { txt: 'Private Coaching' }, { txt: 'Performance Squad' }, { txt: 'Adult Clinics' }, { txt: 'Padel Foundations' }
+        ],
+        footFollow: 'Follow',
+        footCopy: '© 2026 Ahnoud Academy. All rights reserved.',
+        footMade: 'Tennis · Padel'
+      },
+      fa: {
+        navLinks: [
+          { label: 'درباره ما', href: '#about' },
+          { label: 'برنامه‌ها', href: '#programs' },
+          { label: 'مربیان', href: '#coaches' },
+          { label: 'امکانات', href: '#facilities' },
+          { label: 'فروشگاه', href: '#shop' },
+          { label: 'تماس', href: '#contact' }
+        ],
+        navCta: 'رزرو',
+        heroBadge: 'آکادمی تنیس و پادل',
+        heroW1: 'تسلط', heroW2: 'بر هر', heroW3: 'امتیاز',
+        heroH: 'آکادمی‌ای برای بازیِ جدی',
+        heroSub: 'آکادمی اهنود مربیگری تنیس و پادل در سطح جهانی را با زمین‌هایی در استاندارد مسابقات کنار هم آورده است — برای بازیکنانی که بازی‌شان را جدی می‌گیرند.',
+        cta1: 'رزرو جلسه آزمایشی', cta2: 'مشاهده برنامه‌ها',
+        stats: [
+          { v: '۱۰', l: 'زمین استاندارد مسابقات' },
+          { v: '۱۴', l: 'مربی حرفه‌ای' },
+          { v: '+۵۰۰', l: 'بازیکن آموزش‌دیده' }
+        ],
+        aboutBadge: 'درباره ما',
+        aboutH: 'دقت در تک‌تک جزئیات',
+        aboutP: 'اهنود بر پایه‌ی یک باور ساخته شده است: پیشرفت، محصولِ محیط است. سطح زمین‌ها، طراحی تمرین و تحلیل مسابقه — همه‌ی اجزای آکادمی در خدمت بازی شما مهندسی شده‌اند.',
+        bullets: [
+          { txt: 'زمین‌هایی با کیفیت مسابقات حرفه‌ای' },
+          { txt: 'مربیگری داده‌محور با تحلیل ویدئویی' },
+          { txt: 'فرهنگ باشگاه خصوصی؛ اول اعضا' }
+        ],
+        aboutVideoCap: 'یک روز در اهنود',
+        programsBadge: 'برنامه‌ها',
+        programsH: 'دو ورزش، یک استاندارد',
+        tabTennis: 'تنیس', tabPadel: 'پادل',
+        tennis: [
+          { name: 'مربیگری خصوصی', desc: 'جلسات یک‌به‌یک با تحلیل ویدئویی و برنامه‌ی پیشرفت اختصاصی برای هر بازیکن.', level: 'همه سطوح', dur: '۶۰ دقیقه', ph: '[ private lesson ]' },
+          { name: 'تیم قهرمانی', desc: 'گروه منتخبِ دعوتی برای بازیکنان مسابقه‌ای؛ تمرین با شدت تور حرفه‌ای در طول فصل.', level: 'پیشرفته', dur: '۱۲۰ دقیقه', ph: '[ squad training ]' },
+          { name: 'کلینیک بزرگسالان', desc: 'جلسات فنی در گروه‌های کوچک — حداکثر چهار بازیکن در هر زمین.', level: 'متوسط', dur: '۹۰ دقیقه', ph: '[ adult clinic ]' }
+        ],
+        padel: [
+          { name: 'مبانی پادل', desc: 'حرکت پا، بازی با دیواره و تاکتیک‌های پایه — سریع‌ترین مسیر ورود به این ورزش.', level: 'مبتدی', dur: '۶۰ دقیقه', ph: '[ padel intro ]' },
+          { name: 'پادل مسابقه‌ای', desc: 'تاکتیک مسابقه و آماده‌سازی تورنمنت برای تیم‌های دونفره.', level: 'پیشرفته', dur: '۹۰ دقیقه', ph: '[ padel match ]' },
+          { name: 'شب‌های بازی آزاد', desc: 'مسابقات میزبانی‌شده‌ی عصرگاهی با هم‌سطح‌سازی بازیکنان و پذیرایی کنار زمین.', level: 'همه سطوح', dur: '۱۲۰ دقیقه', ph: '[ match night ]' }
+        ],
+        coachesBadge: 'تیم مربیان',
+        coachesH: 'با بهترین‌ها تمرین کنید',
+        coachesSub: 'همه‌ی مربیان اهنود مدرک بین‌المللی دارند و سابقه‌ی بازی در سطح مسابقات حرفه‌ای.',
+        coaches: [
+          { name: 'آرمان رحیمی', role: 'سرمربی تنیس', cred: 'بازیکن سابق تور ATP · ۱۵ سال مربیگری' },
+          { name: 'سارا محمدی', role: 'مدیر بخش پادل', cred: 'مربی رسمی FIP · مربی تیم ملی' },
+          { name: 'دیگو آلوارز', role: 'مربی آمادگی جسمانی', cred: 'متخصص قدرت و تحرک‌پذیری' },
+          { name: 'نیلوفر کاویانی', role: 'تنیس قهرمانی', cred: 'مدرک ITF سطح ۳ · تمرین تحلیل‌محور' }
+        ],
+        facBadge: 'امکانات',
+        facH: 'ساخته‌شده در استاندارد مسابقات',
+        facilities: [
+          { name: '۸ زمین هارد', desc: 'آکریلیک استاندارد ITF با نورپردازی در سطح مسابقات.', ph: '[ hard courts ]' },
+          { name: '۲ زمین خاک رس تنیس', desc: 'خاک رس اروپایی با نگهداری و آب‌پاشی روزانه.', ph: '[ clay courts ]' },
+          { name: '۶ زمین پادل پانوراما', desc: 'دیواره‌های تمام‌شیشه‌ای مطابق استاندارد WPT.', ph: '[ padel courts ]' },
+          { name: 'سالن ریکاوری', desc: 'حمام یخ، سونا و فیزیوتراپی اختصاصی.', ph: '[ recovery ]' },
+          { name: 'فروشگاه و کافه', desc: 'زه‌کشی راکت در همان روز و قهوه کنار زمین.', ph: '[ pro shop ]' }
+        ],
+        priceBadge: 'فروشگاه',
+        priceH: 'پوشاک و تجهیزات برند',
+        shopCta: 'استعلام',
+        priceNote: 'محصولات اختصاصی آکادمی — در فروشگاه مجموعه موجود است.',
+        shop: [
+          { name: 'ست آکادمی', tag: 'پوشاک', price: '۸۵$', ph: '[ apparel ]' },
+          { name: 'راکت اختصاصی', tag: 'اختصاصی', price: '۲۱۰$', ph: '[ racket ]' },
+          { name: 'توپ مسابقه', tag: 'زمین', price: '۱۲$', ph: '[ balls ]' },
+          { name: 'ساک باشگاه', tag: 'لوازم جانبی', price: '۹۵$', ph: '[ bag ]' }
+        ],
+        schedBadge: 'برنامه هفتگی',
+        schedH: 'هر روز، داخل زمین',
+        schedCta: 'دریافت برنامه کامل',
+        schedule: [
+          { name: 'تمرین صبحگاهی', days: 'شنبه تا چهارشنبه', time: '۷:۰۰ – ۹:۰۰', tag: 'تنیس' },
+          { name: 'کلینیک بزرگسالان', days: 'شنبه · دوشنبه · سه‌شنبه', time: '۱۸:۰۰ – ۱۹:۳۰', tag: 'تنیس' },
+          { name: 'تیم قهرمانی', days: 'یکشنبه · سه‌شنبه · پنجشنبه', time: '۱۷:۰۰ – ۱۹:۰۰', tag: 'تنیس' },
+          { name: 'شب پادل آزاد', days: 'پنجشنبه', time: '۲۰:۰۰ – ۲۳:۰۰', tag: 'پادل' }
+        ],
+        quotesBadge: 'اعضا',
+        quotesH: 'از زبان اعضا',
+        quotes: [
+          { txt: 'دقت مربیگری این‌جا با هیچ‌جای دیگری که تمرین کرده‌ام قابل مقایسه نیست. سرویس من در هشت هفته از نو ساخته شد.', name: 'کیان ر.', role: 'تیم قهرمانی' },
+          { txt: 'شب‌های پادل بهترین بخش هفته‌ی من است. رقابتی، اجتماعی و بی‌نقص.', name: 'لیلا ت.', role: 'عضو باشگاه' },
+          { txt: 'کیفیت زمین‌ها و نظم برنامه‌ها بی‌عیب است. یک باشگاه خصوصی با استانداردهای تور حرفه‌ای.', name: 'مارکو د.', role: 'عضو الیت' }
+        ],
+        faqBadge: 'سوالات متداول',
+        faqH: 'پیش از مراجعه',
+        faqs: [
+          { q: 'برای جلسه آزمایشی باید عضو باشم؟', a: 'خیر. جلسه‌ی اول برای همه آزاد است — یک جلسه آزمایشی رزرو کنید تا مربی سطح شما را ارزیابی و برنامه‌ی مناسب را پیشنهاد کند.' },
+          { q: 'چه سطحی برای عضویت لازم است؟', a: 'برنامه‌ها از مبتدی کامل تا سطح مسابقات کشوری را پوشش می‌دهند. هر بازیکن جدید در اولین مراجعه ارزیابی سطح می‌شود.' },
+          { q: 'راکت و توپ تهیه می‌کنید؟', a: 'بله — راکت‌های آزمایشی تنیس و پادل به‌همراه توپ مسابقه در همه‌ی جلسات با مربی موجود است.' },
+          { q: 'رزرو زمین چگونه انجام می‌شود؟', a: 'اعضا از طریق اپلیکیشن آکادمی یا پذیرش، تا هفت روز جلوتر رزرو می‌کنند. اعضای الیت اولویت رزرو دارند.' },
+          { q: 'تا حالا پادل بازی نکرده‌ام — از کجا شروع کنم؟', a: 'دوره‌ی مبانی پادل دقیقاً برای همین طراحی شده است. بیشتر بازیکنان تا پایان ساعت اول به‌راحتی رالی می‌کنند.' }
+        ],
+        contactBadge: 'تماس',
+        contactH: 'ما را کنار زمین پیدا کنید',
+        contactRows: [
+          { label: 'نشانی', value: 'آکادمی اهنود، [نشانی]، [شهر]' },
+          { label: 'تلفن', value: '+۹۸ (۰)۲۱ ··· ····' },
+          { label: 'ایمیل', value: 'hello@ahnoud.academy' },
+          { label: 'ساعات کار', value: 'همه‌روزه، ۶:۳۰ تا ۲۳:۰۰' }
+        ],
+        footTagline: 'آکادمی تنیس و پادل، مهندسی‌شده برای بازیکن جدی.',
+        footExplore: 'دسترسی سریع',
+        footPrograms: 'برنامه‌ها',
+        footProgramLinks: [
+          { txt: 'مربیگری خصوصی' }, { txt: 'تیم قهرمانی' }, { txt: 'کلینیک بزرگسالان' }, { txt: 'مبانی پادل' }
+        ],
+        footFollow: 'شبکه‌ها',
+        footCopy: '© ۲۰۲۶ آکادمی اهنود. تمام حقوق محفوظ است.',
+        footMade: 'تنیس · پادل'
+      }
+    };
+  }
+
+  renderVals() {
+    const lang = this.state.lang;
+    const fa = lang === 'fa';
+    const t = this.copy()[lang];
+
+    // ---- Responsive: device mode (tweak) or live viewport width ----
+    const mode = ['mobile', 'tablet', 'desktop'].indexOf(this.state.deviceMode) >= 0 ? this.state.deviceMode : 'auto';
+    const cw = mode === 'mobile' ? 390 : mode === 'tablet' ? 834 : mode === 'desktop' ? Math.max(this.state.vw, 1280) : this.state.vw;
+    const mob = cw < 720;
+    const tabm = !mob && cw < 1080;
+    const swipe = mob || tabm;
+    const padXv = mob ? '20px' : (Math.round(Math.min(64, Math.max(24, cw * 4 / 100)))) + 'px';
+    const forced = mode === 'mobile' || mode === 'tablet';
+    // fluid size in px computed against the effective content width
+    const fpx = (min, pct, max) => Math.round(Math.min(max, Math.max(min, cw * pct / 100))) + 'px';
+
+    const setLang = (l) => {
+      try { localStorage.setItem('ahnoud-lang', l); } catch (e) {}
+      this.setState({ lang: l });
+    };
+    const saveTweaks = (patch) => {
+      try {
+        const cur = JSON.parse(localStorage.getItem('ahnoud-tweaks') || '{}');
+        localStorage.setItem('ahnoud-tweaks', JSON.stringify({ ...cur, ...patch }));
+      } catch (e) {}
+    };
+
+    // Nav sizing: hidden English labels fix each item's box; Persian text is
+    // overlaid and its font size scaled down so it never exceeds the English width.
+    const measureText = (text, font) => {
+      if (!this._mctx) this._mctx = document.createElement('canvas').getContext('2d');
+      this._mctx.font = font;
+      return this._mctx.measureText(text).width;
+    };
+    const fitNavScale = (enText, otherText) => {
+      const enW = measureText(enText, "600 14px 'General Sans', sans-serif");
+      const faW = measureText(otherText, "600 14px 'Kalameh', 'Vazirmatn', sans-serif");
+      if (!enW || !faW || faW <= enW) return 1;
+      return enW / faW;
+    };
+    const enNavByHref = {};
+    this.copy().en.navLinks.forEach((l) => { enNavByHref[l.href] = l.label; });
+    // One unified font size for the whole nav: the largest size at which
+    // every Persian label still fits inside its English-sized box.
+    let navFontSize = '14px';
+    if (fa) {
+      let scale = fitNavScale('Book a Trial', t.navCta);
+      t.navLinks.filter((l) => l.href !== '#contact').forEach((l) => {
+        scale = Math.min(scale, fitNavScale(enNavByHref[l.href] || l.label, l.label));
+      });
+      navFontSize = Math.max(12, Math.floor(14 * scale * 10) / 10) + 'px';
+    }
+
+    const tabBtnBase = {
+      all: 'unset', boxSizing: 'border-box', cursor: 'pointer',
+      display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '12px',
+      fontFamily: fa ? "'Kalameh','Vazirmatn',sans-serif" : "'General Sans',sans-serif",
+      fontWeight: 700, fontSize: fpx(24, 2.4, 38), lineHeight: 1,
+      textTransform: 'uppercase', letterSpacing: fa ? '0' : '-0.015em',
+      paddingBottom: '16px', borderBottom: '3px solid transparent', transition: 'all .2s'
+    };
+    const mkTab = (key) => ({
+      label: key === 'tennis' ? t.tabTennis : t.tabPadel,
+      onClick: () => this.setState({ tab: key }),
+      style: {
+        ...tabBtnBase,
+        color: this.state.tab === key ? '#12140f' : 'rgba(18,20,15,.32)',
+        borderBottom: this.state.tab === key ? '3px solid #d9f64a' : '3px solid transparent'
+      }
+    });
+
+    const U = 'https://images.unsplash.com/photo-';
+    const TENNIS_IMGS = [
+      U + '1520641147456-f78b3e1d83b6?q=80&w=900&auto=format&fit=crop',
+      U + '1510846699902-9211b99dac11?q=80&w=900&auto=format&fit=crop',
+      U + '1567220720374-a67f33b2a6b9?q=80&w=900&auto=format&fit=crop'
+    ];
+    const PADEL_IMGS = [
+      U + '1646649853703-7645147474ba?q=80&w=900&auto=format&fit=crop',
+      U + '1673266893352-6de89e258064?q=80&w=900&auto=format&fit=crop',
+      U + '1709587825135-80b00570c355?q=80&w=900&auto=format&fit=crop'
+    ];
+    const COACH_IMGS = [
+      U + '1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop',
+      U + '1494790108377-be9c29b29330?q=80&w=800&auto=format&fit=crop',
+      U + '1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop',
+      U + '1438761681033-6461ffad8d80?q=80&w=800&auto=format&fit=crop'
+    ];
+    const FAC_IMGS = [
+      U + '1551773188-0801da12ddae?q=80&w=900&auto=format&fit=crop',
+      U + '1620742820748-87c09249a72a?q=80&w=900&auto=format&fit=crop',
+      U + '1709587824751-dd30420f5cf3?q=80&w=900&auto=format&fit=crop',
+      U + '1571902943202-507ec2618e8f?q=80&w=900&auto=format&fit=crop',
+      U + '1509042239860-f550ce710b93?q=80&w=900&auto=format&fit=crop'
+    ];
+    const SHOP_IMGS = [
+      U + '1521572163474-6864f9cf17ab?q=80&w=900&auto=format&fit=crop',
+      U + '1622279457486-62dcc4a431d6?q=80&w=900&auto=format&fit=crop',
+      U + '1595435934249-5df7ed86e1c0?q=80&w=900&auto=format&fit=crop',
+      U + '1553062407-98eeb64c6a62?q=80&w=900&auto=format&fit=crop'
+    ];
+    const progImgs = this.state.tab === 'padel' ? PADEL_IMGS : TENNIS_IMGS;
+    const programs = (this.state.tab === 'padel' ? t.padel : t.tennis).map((p, i) => {
+      const hov = this.state.progHover === i;
+      return {
+        ...p, img: progImgs[i],
+        onEnter: () => this.setState({ progHover: i }),
+        onLeave: () => this.setState({ progHover: -1 }),
+        imgStyle: {
+          position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover',
+          transform: hov ? 'scale(1.045)' : 'scale(1)', transition: 'transform .7s cubic-bezier(.25,.1,.25,1)'
+        },
+        titleStyle: {
+          position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          opacity: hov ? 0 : 1, transform: hov ? 'translateY(-22px)' : 'translateY(0)',
+          transition: 'opacity .32s ease, transform .32s ease', pointerEvents: 'none'
+        },
+        tagStyle: {
+          position: 'absolute', bottom: '18px', insetInlineStart: '20px',
+          fontSize: '11.5px', textTransform: 'uppercase',
+          letterSpacing: '.1em', color: '#f5f4ef', border: '1px solid rgba(245,244,239,.45)',
+          borderRadius: '6px', padding: '5px 10px',
+          opacity: hov ? 0 : 1, transition: 'opacity .25s ease'
+        },
+        plusStyle: {
+          position: 'absolute', top: '50%', insetInlineEnd: '24px', transform: 'translateY(-50%)',
+          fontSize: '22px', fontWeight: 400, color: '#f5f4ef', lineHeight: 1,
+          opacity: hov ? 0 : 1, transition: 'opacity .25s ease'
+        },
+        panelStyle: {
+          position: 'absolute', left: 0, right: 0, bottom: 0, height: '108px', background: '#101210',
+          transform: hov ? 'translateY(0)' : 'translateY(100%)',
+          transition: 'transform .4s cubic-bezier(.4,0,.2,1)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          gap: '24px', padding: '0 28px', zIndex: 3
+        }
+      };
+    });
+
+    const faqs = t.faqs.map((f, i) => {
+      const open = this.state.faqOpen === i;
+      return {
+        ...f,
+        onToggle: () => this.setState({ faqOpen: open ? -1 : i }),
+        cardStyle: {
+          borderTop: '1px solid rgba(18,20,15,.2)'
+        },
+        iconStyle: {
+          fontSize: '24px', fontWeight: 400, lineHeight: 1, flex: 'none',
+          color: open ? '#12140f' : '#8a8c80',
+          transform: open ? 'rotate(45deg)' : 'rotate(0deg)', transition: 'all .25s'
+        },
+        bodyStyle: {
+          maxHeight: open ? '220px' : '0px', overflow: 'hidden',
+          transition: 'max-height .35s ease'
+        }
+      };
+    });
+
+    return {
+      t,
+      dir: fa ? 'rtl' : 'ltr',
+
+      // ---- Responsive values ----
+      deviceBgStyle: forced ? { background: '#e4e2d9', minHeight: '100vh' } : (mode === 'desktop' ? { overflowX: 'auto' } : null),
+      frameStyle: forced ? { maxWidth: cw + 'px', margin: '0 auto', boxShadow: '0 0 60px rgba(16,18,16,.22)' } : (mode === 'desktop' ? { minWidth: '1280px' } : null),
+      padX: padXv,
+      railStyle: swipe ? {
+        display: 'flex', gap: '16px', overflowX: 'auto', scrollSnapType: 'x mandatory',
+        WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none',
+        marginTop: '64px', marginInline: 'calc(-1 * ' + padXv + ')',
+        paddingInline: padXv, scrollPaddingInline: padXv, paddingBottom: '8px'
+      } : { display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '24px', marginTop: '64px' },
+      railItemStyle: swipe ? {
+        flex: 'none', width: mob ? '76%' : '36%', scrollSnapAlign: 'start',
+        display: 'flex', flexDirection: 'column', gap: '16px', transition: 'transform .25s'
+      } : { display: 'flex', flexDirection: 'column', gap: '16px', transition: 'transform .25s' },
+      heroPadX: mob ? '20px' : '40px',
+      h1Size: fpx(40, 5.6, 92),
+      h2Size: fpx(34, 4.8, 76),
+      aboutH2Size: fpx(30, 3.8, 56),
+      priceSize: fpx(40, 3.6, 58),
+      awBig: fpx(36, 8.6, 148),
+      awSide: fpx(26, 6, 104),
+      wordmarkSize: fpx(48, 13, 220),
+      progNameSize: fpx(24, 3.2, 46),
+      facNameSize: fpx(20, 2.4, 34),
+      tabSlashSize: fpx(18, 1.8, 30),
+      aboutFrameX: mob ? '20px' : fpx(40, 10, 180),
+      cols2a: mob ? '1fr' : '1.15fr 1fr',
+      cols2: mob ? '1fr' : '1fr 1fr',
+      cols2b: mob ? '1fr' : '1fr 1.1fr',
+      colsFaq: mob ? '1fr' : '1fr 1.4fr',
+      coachCols: mob ? '1fr' : tabm ? 'repeat(2,1fr)' : 'repeat(4,1fr)',
+      threeCols: mob ? '1fr' : 'repeat(3,1fr)',
+      footCols: mob ? '1fr 1fr' : '1.4fr 1fr 1fr 1fr',
+      footBrandCol: mob ? '1 / -1' : 'auto',
+      schedCols: mob ? '1fr auto' : '1.4fr 1.2fr .9fr auto',
+      facCols: mob ? 'auto 1fr' : 'auto 1.1fr 1fr auto',
+      facDescCol: mob ? '2' : 'auto',
+      facImgDisplay: mob ? 'none' : 'flex',
+      gridGap: mob ? '28px' : '64px',
+      selfEnd: mob ? 'start' : 'end',
+      tabsSelf: mob ? 'start' : 'end',
+      mapH: mob ? '340px' : '560px',
+      progRowH: mob ? '260px' : '320px',
+      progDescDisplay: mob ? 'none' : 'block',
+      bodyFont: fa ? "'Kalameh','Vazirmatn',system-ui,sans-serif" : "'General Sans',system-ui,sans-serif",
+      headFont: fa ? "'Kalameh','Vazirmatn',sans-serif" : "'General Sans',sans-serif",
+      headItalic: fa ? 'normal' : 'italic',
+      trackWide: fa ? '0' : '.12em',
+      lhHead: fa ? '1.12' : '.94',
+      lhHead2: fa ? '1.14' : '.98',
+      trackHead: fa ? '0' : '-0.015em',
+      navCta: t.navCta,
+      footNavLinks: t.navLinks,
+      navWrapMax: forced ? cw + 'px' : '100%',
+      navLinksWrapStyle: {
+        display: 'flex', alignItems: 'center', gap: '6px',
+        flex: mob ? '1 1 auto' : '0 1 auto', minWidth: 0,
+        overflowX: 'auto', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch',
+        scrollSnapType: 'x proximity'
+      },
+      ctaLabelStyle: {
+        position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: navFontSize
+      },
+      navLinks: t.navLinks.filter((l) => l.href !== '#contact').map((l) => {
+        const on = this.state.active === l.href.slice(1);
+        const enLabel = enNavByHref[l.href] || l.label;
+        return { ...l, sizer: enLabel, labelStyle: {
+          position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: navFontSize
+        }, style: {
+          position: 'relative', scrollSnapAlign: 'start',
+          color: on ? '#f5f4ef' : '#9d9e96', textDecoration: 'none', fontWeight: 600,
+          letterSpacing: 0,
+          padding: '10px 18px', borderRadius: '999px', whiteSpace: 'nowrap',
+          border: on ? '1px solid rgba(245,244,239,.45)' : '1px solid transparent',
+          background: on ? 'rgba(245,244,239,.06)' : 'transparent',
+          transition: 'all .18s'
+        } };
+      }),
+      stats: t.stats,
+      heroList: fa ? ['تنیس', 'پادل', 'آموزش نوجوانان'] : ['Tennis', 'Padel', 'Junior Development'],
+      aw1: fa ? 'اهنود' : 'Ahnoud',
+      aw2: fa ? 'تنیس' : 'Tennis',
+      aw3: fa ? 'پادل' : 'Padel',
+      aw4: fa ? 'آکادمی' : 'Academy',
+      aboutStat: t.stats[1] ? t.stats[1].v + ' ' + t.stats[1].l : '',
+      progLine1: fa ? 'دو ورزش،' : 'Two Games.',
+      progLine2: fa ? 'یک استاندارد' : 'One Standard.',
+      heroStatLabel: t.stats[0] ? t.stats[0].l : '',
+      heroStatValue: t.stats[0] ? t.stats[0].v : '',
+      bullets: t.bullets,
+      programs,
+      coaches: t.coaches.map((c, i) => ({ ...c, img: COACH_IMGS[i], num: '0' + (i + 1) })),
+      facilities: t.facilities.map((f, i) => ({ ...f, img: FAC_IMGS[i], num: '0' + (i + 1) })),
+      heroImg: U + '1545151414-8a948e1ea54f?q=80&w=1800&auto=format&fit=crop',
+      aboutImg: U + '1499510318569-1a3d67dc3976?q=80&w=1400&auto=format&fit=crop',
+
+      shopItems: t.shop.map((s, i) => ({ ...s, img: SHOP_IMGS[i], num: '0' + (i + 1) })),
+      schedule: t.schedule,
+      quotes: t.quotes,
+      faqs,
+      contactRows: t.contactRows,
+      footProgramLinks: t.footProgramLinks,
+      footWordmark: fa ? 'اهنود' : 'Ahnoud',
+      footH: fa ? 'آماده‌ی بازی هستید؟' : 'Ready to play?',
+      setEn: () => setLang('en'),
+      setFa: () => setLang('fa'),
+      toggleLang: () => setLang(fa ? 'en' : 'fa'),
+      langToggleLabel: fa ? 'EN' : 'فا',
+      langToggleTitle: fa ? 'English' : 'فارسی',
+      langToggleStyle: {
+        width: '44px', height: '44px', borderRadius: '12px', flex: 'none',
+        background: '#3b3c37', border: 'none',
+        color: '#f5f4ef', cursor: 'pointer',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: '14px', fontWeight: 700, lineHeight: 1,
+        fontFamily: fa ? "'General Sans',sans-serif" : "'Kalameh','Vazirmatn',sans-serif",
+        transition: 'all .18s', marginInlineStart: '4px'
+      },
+      tabA: this.state.padelFirst ? mkTab('padel') : mkTab('tennis'),
+      tabB: this.state.padelFirst ? mkTab('tennis') : mkTab('padel'),
+
+      // ---- Custom tweaks panel ----
+      twOpen: this.state.twOpen,
+      twClosed: !this.state.twOpen,
+      twToggle: () => this.setState((s) => ({ twOpen: !s.twOpen })),
+      twDevices: ['auto', 'desktop', 'tablet', 'mobile'].map((d) => ({
+        label: d.charAt(0).toUpperCase() + d.slice(1),
+        onClick: () => { this.setState({ deviceMode: d }); saveTweaks({ deviceMode: d }); },
+        style: {
+          padding: '8px 0', borderRadius: '9px', fontSize: '12px', fontWeight: 600,
+          cursor: 'pointer', fontFamily: 'inherit', transition: 'all .18s', textAlign: 'center',
+          border: '1px solid ' + (this.state.deviceMode === d ? '#d9f64a' : 'rgba(245,244,239,.16)'),
+          background: this.state.deviceMode === d ? 'rgba(217,246,74,.12)' : 'transparent',
+          color: this.state.deviceMode === d ? '#d9f64a' : '#c9ccbf'
+        }
+      })),
+      twLangs: [{ k: 'en', label: 'English' }, { k: 'fa', label: 'فارسی' }].map((o) => ({
+        label: o.label,
+        onClick: () => setLang(o.k),
+        style: {
+          padding: '8px 0', borderRadius: '8px', fontSize: '12.5px', fontWeight: 600,
+          cursor: 'pointer', transition: 'all .18s', textAlign: 'center', border: 'none',
+          fontFamily: o.k === 'fa' ? "'Kalameh','Vazirmatn',sans-serif" : 'inherit',
+          background: lang === o.k ? '#d9f64a' : 'transparent',
+          color: lang === o.k ? '#12140f' : '#9d9e96'
+        }
+      })),
+      twPadelToggle: () => this.setState((s) => {
+        saveTweaks({ padelFirst: !s.padelFirst });
+        return { padelFirst: !s.padelFirst, tab: !s.padelFirst ? 'padel' : 'tennis' };
+      }),
+      twSwitchStyle: {
+        width: '36px', height: '21px', borderRadius: '999px', position: 'relative', flex: 'none',
+        display: 'block', transition: 'background .2s',
+        background: this.state.padelFirst ? '#d9f64a' : 'rgba(245,244,239,.16)'
+      },
+      twKnobStyle: {
+        position: 'absolute', top: '2px', left: this.state.padelFirst ? '17px' : '2px',
+        width: '17px', height: '17px', borderRadius: '50%', transition: 'left .2s',
+        background: this.state.padelFirst ? '#12140f' : '#f5f4ef', display: 'block'
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

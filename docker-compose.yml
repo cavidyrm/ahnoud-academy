@@ -1,0 +1,31 @@
+# Traefik routes by domain; host port is for direct IP access (preview / before DNS).
+#
+#   Domain:  https://ahnoudacademy.com
+#   Direct:  http://<server-ip>:3005
+#
+# On the server: copy to APP_DIR (e.g. /opt/ahnoud-academy). Set GitHub secret APP_DIR to the same path.
+services:
+  app:
+    image: ghcr.io/cavidyrm/ahnoud-academy:latest
+    container_name: ahnoud-academy
+    restart: unless-stopped
+    ports:
+      - "3005:80"
+    networks:
+      - traefik-public
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
+      - "traefik.http.services.ahnoud-academy.loadbalancer.server.port=80"
+      - "traefik.http.routers.ahnoud-academy.rule=Host(`ahnoudacademy.com`) || Host(`www.ahnoudacademy.com`)"
+      - "traefik.http.routers.ahnoud-academy.entrypoints=websecure"
+      - "traefik.http.routers.ahnoud-academy.tls=true"
+      - "traefik.http.routers.ahnoud-academy.tls.certresolver=myresolver"
+      - "traefik.http.routers.ahnoud-academy-http.rule=Host(`ahnoudacademy.com`) || Host(`www.ahnoudacademy.com`)"
+      - "traefik.http.routers.ahnoud-academy-http.entrypoints=web"
+      - "traefik.http.routers.ahnoud-academy-http.middlewares=ahnoud-academy-redirect-https"
+      - "traefik.http.middlewares.ahnoud-academy-redirect-https.redirectscheme.scheme=https"
+
+networks:
+  traefik-public:
+    external: true
