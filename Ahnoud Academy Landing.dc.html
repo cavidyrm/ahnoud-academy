@@ -71,23 +71,23 @@ body{margin:0;background:#f5f4ef}
 
   <!-- ============ NAV (floating, bottom) ============ -->
   <div data-screen-label="Nav" dir="ltr" style="position:fixed;bottom:24px;left:0;right:0;z-index:100;display:flex;justify-content:center;padding:0 24px;pointer-events:none;box-sizing:border-box;max-width:{{ navWrapMax }};margin:0 auto">
-    <nav style="pointer-events:auto;background:#2c2d29;border-radius:18px;display:flex;align-items:center;gap:6px;padding:7px;color:#f5f4ef;box-shadow:0 18px 48px rgba(16,18,16,.38);max-width:100%">
-      <a href="#top" title="AHNOUD" style="width:44px;height:44px;border-radius:12px;background:#3b3c37;display:grid;place-items:center;text-decoration:none;flex:none;margin-inline-end:6px">
+    <nav style="{{ navStyle }}">
+      <a href="#top" title="AHNOUD" style="{{ navTileStyle }}">
         <img src="assets/logo-lime.svg" alt="Ahnoud" style="height:26px;width:22px;object-fit:contain;display:block">
       </a>
       <div class="ahn-rail" style="{{ navLinksWrapStyle }}">
         <sc-for list="{{ navLinks }}" as="lnk" hint-placeholder-count="5">
-          <a href="{{ lnk.href }}" style="{{ lnk.style }}" style-hover="opacity:1;color:#f5f4ef">
+          <a href="{{ lnk.href }}" style="{{ lnk.style }}" style-hover="opacity:.65">
             <span style="visibility:hidden;font-family:'General Sans',sans-serif;font-size:14px;white-space:nowrap;display:block">{{ lnk.sizer }}</span>
             <span style="{{ lnk.labelStyle }}">{{ lnk.label }}</span>
           </a>
         </sc-for>
       </div>
-      <a href="#contact" style="position:relative;background:#f5f4ef;color:#1c1d19;text-decoration:none;font-weight:600;letter-spacing:0;padding:11px 22px;border-radius:999px;transition:all .18s;white-space:nowrap;margin-inline-start:6px" style-hover="background:#d9f64a" style-active="transform:scale(.97)">
+      <a href="#contact" style="{{ navCtaStyle }}" style-hover="background:#d9f64a;color:#12140f" style-active="transform:scale(.97)">
         <span style="visibility:hidden;font-family:'General Sans',sans-serif;font-size:14px;white-space:nowrap;display:block">Book a Trial</span>
         <span style="{{ ctaLabelStyle }}">{{ navCta }}</span>
       </a>
-      <button onClick="{{ toggleLang }}" title="{{ langToggleTitle }}" style="{{ langToggleStyle }}" style-hover="background:#45463f;color:#d9f64a">{{ langToggleLabel }}</button>
+      <button onClick="{{ toggleLang }}" title="{{ langToggleTitle }}" style="{{ langToggleStyle }}" style-hover="background:rgba(140,142,130,.3)">{{ langToggleLabel }}</button>
     </nav>
   </div>
 
@@ -126,7 +126,7 @@ body{margin:0;background:#f5f4ef}
   </section>
 
   <!-- ============ MARQUEE ============ -->
-  <div dir="ltr" style="background:#101210;overflow:hidden;padding:20px 0">
+  <div dir="ltr" data-nav-dark="1" style="background:#101210;overflow:hidden;padding:20px 0">
     <div style="display:flex;gap:44px;width:max-content;animation:ahnMarquee 26s linear infinite" style-hover="animation-play-state:paused">
       <div style="display:flex;gap:44px;align-items:center">
         <span style="font-family:'General Sans',sans-serif;font-style:italic;font-weight:900;font-size:22px;text-transform:uppercase;color:#d9f64a;white-space:nowrap">Ahnoud Academy</span><span style="width:10px;height:10px;border-radius:50%;background:#d9f64a"></span>
@@ -148,7 +148,7 @@ body{margin:0;background:#f5f4ef}
   </div>
 
   <!-- ============ ABOUT ============ -->
-  <section id="about" data-screen-label="About" style="background:#101210;color:#f5f4ef;padding:150px 0 110px;overflow:hidden">
+  <section id="about" data-screen-label="About" data-nav-dark="1" style="background:#101210;color:#f5f4ef;padding:150px 0 110px;overflow:hidden">
     <div style="position:relative;margin:0 {{ aboutFrameX }}">
       <div style="position:relative;overflow:hidden;height:74vh;min-height:480px;border-radius:12px;background:repeating-linear-gradient(45deg,#1c1e1a 0px,#1c1e1a 14px,#23251f 14px,#23251f 28px);display:flex;align-items:center;justify-content:center">
         <span style="font-size:12px;color:#8a8c80;background:rgba(16,18,16,.7);padding:6px 12px;border-radius:6px">[ courts — wide shot ]</span>
@@ -261,7 +261,7 @@ body{margin:0;background:#f5f4ef}
   </section>
 
   <!-- ============ FACILITIES (dark) ============ -->
-  <section id="facilities" data-screen-label="Facilities" style="background:#101210;color:#f5f4ef;padding:120px 0 130px">
+  <section id="facilities" data-screen-label="Facilities" data-nav-dark="1" style="background:#101210;color:#f5f4ef;padding:120px 0 130px">
     <div data-reveal="1" style="padding:0 {{ padX }}">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(245,244,239,.14);padding-top:26px">
         <span style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:{{ trackWide }};color:#a9ac9f">{{ t.facBadge }}</span>
@@ -429,8 +429,8 @@ body{margin:0;background:#f5f4ef}
   </div>
 
   <!-- ============ FOOTER (revealed on scroll) ============ -->
-  <footer data-screen-label="Footer" style="position:sticky;bottom:0;z-index:0;background:#101210;color:#f5f4ef;padding:48px 0 32px;overflow:clip">
-    <div style="padding:0 {{ padX }}">
+  <footer data-screen-label="Footer" data-nav-dark="1" style="position:sticky;bottom:0;z-index:0;background:#101210;color:#f5f4ef;padding:48px 0 32px;overflow:clip">
+    <div id="footer-inner" style="padding:0 {{ padX }};will-change:transform,opacity">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid rgba(245,244,239,.14);padding-top:22px">
         <div style="display:flex;align-items:center;gap:10px">
           <img src="assets/logo-lime.svg" alt="" style="height:24px;width:auto;display:block">
@@ -521,7 +521,30 @@ class Component extends DCLogic {
       });
       const hi = document.getElementById('hero-img');
       if (hi) hi.style.transform = 'scale(1.1) translateY(' + Math.min(44, window.scrollY * 0.08) + 'px)';
-      if (cur !== this.state.active) this.setState({ active: cur });
+      // Footer reveal: eased parallax as the sticky footer is uncovered
+      const fi = document.getElementById('footer-inner');
+      const foot = fi && fi.closest('footer');
+      if (fi && foot) {
+        const fh = foot.offsetHeight || 1;
+        // Distance left to scroll to the page bottom = how much of the footer is still covered
+        const remaining = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+        const revealed = Math.min(1, Math.max(0, 1 - remaining / fh));
+        const e = 1 - Math.pow(1 - revealed, 3); // ease-out cubic
+        fi.style.transform = 'translateY(' + ((1 - e) * fh * 0.45).toFixed(1) + 'px) scale(' + (0.96 + e * 0.04).toFixed(4) + ')';
+        fi.style.opacity = (0.25 + e * 0.75).toFixed(3);
+      }
+      // Detect whether the nav is floating over a dark section
+      let navDark = false;
+      if (document.elementsFromPoint) {
+        const pts = document.elementsFromPoint(window.innerWidth / 2, window.innerHeight - 55);
+        for (let i = 0; i < pts.length; i++) {
+          const el = pts[i];
+          if (el.closest && el.closest('[data-screen-label="Nav"]')) continue;
+          navDark = !!(el.closest && el.closest('[data-nav-dark]'));
+          break;
+        }
+      }
+      if (cur !== this.state.active || navDark !== !!this.state.navDark) this.setState({ active: cur, navDark: navDark });
     };
     window.addEventListener('scroll', this._onScroll, { passive: true });
     this._onScroll();
@@ -1033,6 +1056,35 @@ class Component extends DCLogic {
       navCta: t.navCta,
       footNavLinks: t.navLinks,
       navWrapMax: forced ? cw + 'px' : '100%',
+      navStyle: {
+        pointerEvents: 'auto',
+        background: (this.state.navDark ? 'rgba(64,66,58,.35)' : 'rgba(255,255,253,.5)'),
+        backdropFilter: 'blur(44px) saturate(2.2)',
+        WebkitBackdropFilter: 'blur(44px) saturate(2.2)',
+        border: '1px solid ' + (this.state.navDark ? 'rgba(245,244,239,.18)' : 'rgba(18,20,15,.08)'),
+        borderRadius: '18px', display: 'flex', alignItems: 'center', gap: '6px', padding: '7px',
+        color: this.state.navDark ? '#f5f4ef' : '#12140f',
+        boxShadow: this.state.navDark
+          ? 'inset 0 1px 0 rgba(255,255,255,.2), inset 0 -1px 0 rgba(255,255,255,.06), 0 18px 48px rgba(16,18,16,.3)'
+          : 'inset 0 1px 0 rgba(255,255,255,.7), inset 0 -1px 0 rgba(255,255,255,.3), 0 18px 48px rgba(16,18,16,.16)',
+        maxWidth: '100%',
+        transition: 'background .35s, border-color .35s, box-shadow .35s, color .35s'
+      },
+      navTileStyle: {
+        width: '44px', height: '44px', borderRadius: '12px',
+        background: this.state.navDark ? 'rgba(245,244,239,.12)' : '#12140f',
+        boxShadow: this.state.navDark ? 'inset 0 1px 0 rgba(255,255,255,.12)' : 'none',
+        display: 'grid', placeItems: 'center', textDecoration: 'none', flex: 'none',
+        marginInlineEnd: '6px', transition: 'background .35s, box-shadow .35s'
+      },
+      navCtaStyle: {
+        position: 'relative',
+        background: this.state.navDark ? '#f5f4ef' : '#12140f',
+        color: this.state.navDark ? '#1c1d19' : '#d9f64a',
+        textDecoration: 'none', fontWeight: 600, letterSpacing: 0,
+        padding: '11px 22px', borderRadius: '999px', transition: 'all .25s',
+        whiteSpace: 'nowrap', marginInlineStart: '6px'
+      },
       navLinksWrapStyle: {
         display: 'flex', alignItems: 'center', gap: '6px',
         flex: mob ? '1 1 auto' : '0 1 auto', minWidth: 0,
@@ -1051,12 +1103,13 @@ class Component extends DCLogic {
           fontSize: navFontSize
         }, style: {
           position: 'relative', scrollSnapAlign: 'start',
-          color: on ? '#f5f4ef' : '#9d9e96', textDecoration: 'none', fontWeight: 600,
+          color: this.state.navDark ? (on ? '#f5f4ef' : '#c3c5ba') : (on ? '#12140f' : '#43453d'),
+          textDecoration: 'none', fontWeight: 600,
           letterSpacing: 0,
           padding: '10px 18px', borderRadius: '999px', whiteSpace: 'nowrap',
-          border: on ? '1px solid rgba(245,244,239,.45)' : '1px solid transparent',
-          background: on ? 'rgba(245,244,239,.06)' : 'transparent',
-          transition: 'all .18s'
+          border: on ? '1px solid ' + (this.state.navDark ? 'rgba(245,244,239,.45)' : 'rgba(18,20,15,.35)') : '1px solid transparent',
+          background: on ? (this.state.navDark ? 'rgba(245,244,239,.08)' : 'rgba(18,20,15,.05)') : 'transparent',
+          transition: 'all .18s, color .35s'
         } };
       }),
       stats: t.stats,
@@ -1092,8 +1145,10 @@ class Component extends DCLogic {
       langToggleTitle: fa ? 'English' : 'فارسی',
       langToggleStyle: {
         width: '44px', height: '44px', borderRadius: '12px', flex: 'none',
-        background: '#3b3c37', border: 'none',
-        color: '#f5f4ef', cursor: 'pointer',
+        background: this.state.navDark ? 'rgba(245,244,239,.12)' : 'rgba(18,20,15,.08)',
+        border: 'none',
+        boxShadow: this.state.navDark ? 'inset 0 1px 0 rgba(255,255,255,.12)' : 'none',
+        color: this.state.navDark ? '#f5f4ef' : '#12140f', cursor: 'pointer',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: '14px', fontWeight: 700, lineHeight: 1,
         fontFamily: fa ? "'General Sans',sans-serif" : "'Kalameh','Vazirmatn',sans-serif",

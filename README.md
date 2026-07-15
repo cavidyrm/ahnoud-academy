@@ -1,5 +1,11 @@
 # Handoff: Ahnoud Academy — Landing Page + 404
 
+**Version 1.1.0** — 2026-07-15
+
+## Changelog
+- **1.1.0** (2026-07-15): Floating nav rebuilt as adaptive "liquid glass" (heavy blur, light/dark auto-switching over sections); footer reveal now scroll-driven with ease-out cubic parallax (translate + scale + fade).
+- **1.0.0** (2026-07-15): Initial handoff — landing page, 404, bilingual EN/FA.
+
 ## Overview
 Marketing landing page for **Ahnoud Academy**, a tennis & padel academy, plus a matching 404 error page. Fully bilingual (English LTR / Persian RTL) with a persisted language toggle. The goal of the page: present the academy's programs, coaches, facilities, shop, and schedule, and drive visitors to **book a trial session**.
 
@@ -33,9 +39,12 @@ One long-scroll page. Sections in order, each numbered `( 01 )`–`( 10 )` in th
 9. **Testimonials** — light, 3-col grid of rule-topped quotes with lime-square + name/role signature. −4px lift on hover.
 10. **FAQ** — two-col (1fr/1.4fr): H2 left, accordion right. 5 items, one open at a time (first open by default), "+" rotates 45° when open, body max-height animates .35s.
 11. **Contact** — two-col (1fr/1.1fr): H2 + 4 rule-topped label/value rows (Address, Phone, Email, Hours) + dark CTA button; right: 560px map placeholder (radius 12).
-12. **Footer** — dark, **sticky reveal**: footer is `position:sticky; bottom:0; z-index:0` and the entire page content above sits in a wrapper with `z-index:1` and a large drop shadow, so the footer is revealed from behind as you finish scrolling. Contains: logo row, 4-col grid (brand col with H2 "Ready to play?", lime CTA button, tagline; Explore nav links; Programs list; Follow links), a giant centered "Ahnoud" wordmark (fluid up to 220px), and a copyright bar.
+12. **Footer** — dark, **sticky reveal with scroll-driven parallax**: footer is `position:sticky; bottom:0; z-index:0` and the entire page content above sits in a wrapper with `z-index:1` and a large drop shadow, so the footer is revealed from behind as you finish scrolling. The footer's inner content additionally animates with reveal progress `p = 1 − remainingScrollToPageBottom / footerHeight` (clamped 0–1), eased with ease-out cubic (`e = 1 − (1−p)³`): `translateY((1−e) × footerHeight × 0.45)`, `scale(0.96 + e×0.04)`, `opacity 0.25 + e×0.75`. Driven directly by the scroll handler (no CSS transition), so it is perfectly reversible. Contains: logo row, 4-col grid (brand col with H2 "Ready to play?", lime CTA button, tagline; Explore nav links; Programs list; Follow links), a giant centered "Ahnoud" wordmark (fluid up to 220px), and a copyright bar.
 
-**Floating nav (all viewports)** — fixed, bottom 24px, centered. Dark `#2c2d29` pill (radius 18, 7px padding): logo tile (44×44, `#3b3c37`, radius 12), link pills (active section highlighted via scroll-spy: 1px `rgba(245,244,239,.45)` border + `rgba(245,244,239,.06)` bg), cream "Book a Trial" CTA pill (hover: lime), 44×44 language toggle tile ("فا"/"EN"). On mobile the link rail scrolls horizontally. **Nav width trick:** each label reserves the width of its English text (hidden sizer span) and the Persian label is overlaid at a computed font size so the nav never reflows between languages.
+**Floating nav (all viewports)** — fixed, bottom 24px, centered. **Adaptive liquid-glass pill** (radius 18, 7px padding): `backdrop-filter: blur(44px) saturate(2.2)` with two modes that crossfade (`.35s`) based on what is behind the nav (detected via `elementsFromPoint` at viewport center, 55px from bottom — sections marked `data-nav-dark` trigger dark mode):
+- **Over light sections**: bg `rgba(255,255,253,.5)`, border `rgba(18,20,15,.08)`, inner top highlight `rgba(255,255,255,.7)`, ink text `#12140f` (inactive links `#43453d`), dark logo tile `#12140f`, dark CTA pill (`#12140f` bg / lime text).
+- **Over dark sections** (marquee, About, Facilities, footer): bg `rgba(64,66,58,.35)`, border `rgba(245,244,239,.18)`, light text `#f5f4ef` (inactive `#c3c5ba`), frosted tiles `rgba(245,244,239,.12)`, cream CTA pill.
+Active link pill: 1px border (`rgba(245,244,239,.45)` dark / `rgba(18,20,15,.35)` light) + faint bg tint. Logo tile 44×44 radius 12; language toggle tile 44×44 ("فا"/"EN"). CTA hover: lime `#d9f64a`. On mobile the link rail scrolls horizontally. **Nav width trick:** each label reserves the width of its English text (hidden sizer span) and the Persian label is overlaid at a computed font size so the nav never reflows between languages.
 
 ### 2. 404 page (`404.dc.html`)
 Cream bg, same header (logo + language toggle). Centered: badge "( 404 — Page not found )", giant "4 ● 4" figure (the zero is a lime ball with a 3px inset dark ring, up to 300px), uppercase H1 "That one landed out of bounds", sub-copy, dark CTA "Back to home +". Rule-topped footer bar with copyright. Fully bilingual, reads the same persisted language key.
